@@ -1,0 +1,74 @@
+<html>
+
+<head>
+    <title>SchoolTool</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
+        integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+        crossorigin="anonymous"></script>
+    <script src="index.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="js/jquery.dataTables.min.js"></script>
+    <script src="js/dataTables.buttons.min.js"></script>
+    <script src="js/jszip.min.js"></script>
+    <script src="js/pdfmake.min.js"></script>
+    <script src="js/vfs_fonts.js"></script>
+    <script src="js/buttons.html5.min.js"></script>
+    <meta charset="UTF-8">
+
+</head>
+
+<body style="text-align: right;" dir="rtl">
+
+    <header style="background-color: rgb(20, 220, 127); margin-right: auto;  margin-bottom: 2%; height: 10%;">
+        <h1 id="mainHeader" style="color: rgb(255, 255, 255) ;  text-align: center; ">הגדרת בית הספר</h1>
+    </header>
+
+    <div id="daysAndHours" style="width:35%; margin:auto; text-align: center;">
+        <input type="number" class="form-control" id="days" style="text-align: center;"
+            placeholder="מס' ימי לימודים"><br>
+        <input type="number" class="form-control" id="hours" style="text-align: center;"
+            placeholder="מס' שעות לימודים"><br>
+        <input type="button" value="המשך" onclick="toSchoolStructure()" class="btn btn-primary"></button>
+    </div>
+
+    <div id="schoolStructure" style="width:35%; margin:auto; text-align: center; display:none">
+        <input type="number" class="form-control" id="floors" style="text-align: center;" placeholder="מס' קומות"><br>
+        <input type="number" class="form-control" id="distBetweenFloors" style="text-align: center;"
+            placeholder="מרחק בין קומות"><br>
+        <input type="number" class="form-control" id="rooms" style="text-align: center;"
+            placeholder="מס' כיתות בכל קומה"><br>
+        <input type="number" class="form-control" id="distBetweenRooms" style="text-align: center;"
+            placeholder="מרחק בין כיתות"><br>
+        <input type="button" value="המשך" onclick="toTeachers()" class="btn btn-primary"></button>
+    </div>
+
+    <div id="teachers" style="width:35%; margin:auto; text-align: center; display:none">
+        <input type="number" class="form-control" id="numOfTeachers" style="text-align: center;"
+            placeholder="מס' מורים במערכת"><br>
+        <input type="button" value="המשך" onclick="toTeacherName()" class="btn btn-primary"></button>
+    </div>
+
+    <div id="teacherName" style="width:35%; margin:auto; text-align: center; display:none">
+        <input type="text" class="form-control" id="name" style="text-align: center;" placeholder="שם המורה"><br>
+        <input type="button" value="המשך" onclick="toClassesNum()" class="btn btn-primary"></button>
+    </div>
+
+    <div id="classesNum" style="width:35%; margin:auto; text-align: center; display:none">
+        <input type="number" class="form-control" id="numOfClasses" style="text-align: center;"
+            placeholder="מספר שעות עבודה"><br>
+        <input type="button" value="המשך" onclick="toClassLocations()" class="btn btn-primary"></button>
+    </div>
+
+    <div id="classLocations" style="width:35%; margin:auto; text-align: center; display:none">
+        <div id="selects" style="margin:auto; text-align: center;"></div>
+        <input style = "margin-top:5%" type="button" onclick="nextDay()" value="המשך" class="btn btn-primary"></button>
+    </div>
+
+
+    <div style="text-align:center" id="results"></div>
+</body>
+
+</html>
