@@ -12,6 +12,27 @@ var teachers = [];
 var currentDay = 0;
 var numOfClasses;
 
+function validNumTeachers(){
+    var checkDH = false;
+
+    var nTeacers = document.getElementById("numOfTeachers").value;
+    if (nTeacers <= 0 ) {
+        checkDH = false;
+    }
+    else {
+        checkDH = true;
+    }
+    if (checkDH == true) {
+        $('#NteachersB').prop("disabled", false);
+    }
+    else {
+        $('#NteachersB').prop("disabled", true);
+    }
+
+
+}
+
+
 
 $(document).ready(function () {
 
@@ -73,29 +94,11 @@ function schedule(route, teacher) {
                     }
                 }
                 else {
-                    if (isAvailable(i, j, teacher)) {
-                        if (temp[k].room < rooms - 1) {
-                            timeTable[i][j][temp[k].floor][(temp[k].room + 1)] = teacher;
-                            removeSpot(temp, k);
-                            continue;
-                        }
-                        if (temp[k].room > 0) {
-                            timeTable[i][j][temp[k].floor][(temp[k].room - 1)] = teacher;
-                            removeSpot(temp, k);
-                            continue;
-                        }
-
-                        if (temp[k].floor < floors - 1) {
-                            timeTable[i][j][temp[k].floor + 1][1] = teacher;
-                            removeSpot(temp, k);
-                            continue;
-                        }
-
-                        if (temp[k].floor >= 0) {
-                            timeTable[i][j][temp[k].floor - 1][1] = teacher;
-                            removeSpot(temp, k);
-                            continue;
-                        }
+                    if (!(isAvailable(i, j, teacher))) {
+                        var reschedule = temp.slice(k-1,temp.length);
+                        removeSpot(reschedule, k);
+                        var z = temp.indexOf(nextClass(reschedule));
+                        timeTable[i][j][temp[z].floor][temp[z].room] = teacher;
                     }
                 }
         }
@@ -158,7 +161,6 @@ function createTableForWeek(tableData) {
     result += "</tbody></table>";
     return result;
 }
-
 function transpose(objTable) {
     objTable.each(function () {
         var $this = $(this);
@@ -178,6 +180,7 @@ function transpose(objTable) {
             $this.append(this);
         });
     });
+
     //switch old th to td
     objTable.find('th').wrapInner('<td />').contents().unwrap();
     //move first tr into thead
@@ -232,17 +235,48 @@ function getTeacherName() {
 function getClassesNum() {
     numOfClasses = parseInt(document.getElementById("numOfClasses").value);
 }
+
+
 function toSchoolStructure() {
+    var daysWeek = document.getElementById("days").value;
+    var hoursDays = document.getElementById("hours").value;
+
+    if (daysWeek <= 0 || daysWeek > 7 || hoursDays <= 0 || hoursDays > 24) {
+alert("יש למלא מספר תקין של שעות וימים"); 
+
+}
+else
+{
     $("#daysAndHours").hide();
     $("#schoolStructure").fadeIn();
 }
-
+    
+}
 function toTeachers() {
+    var nClass = document.getElementById("rooms").value;
+    var floors = document.getElementById("floors").value;
+    var disClass = document.getElementById("distBetweenRooms").value;
+    var disFloors = document.getElementById("distBetweenFloors").value;
+       if (nClass <= 0 || floors <= 0 || disClass <= 0 || disFloors <= 0) 
+       {
+           alert("יש למלא נתונים גדולים מ0");
+       }
+       else{
+ 
     $("#schoolStructure").hide();
     $("#teachers").fadeIn();
+       }
 }
 
 function toTeacherName() {
+var nTeacers = document.getElementById("numOfTeachers").value; 
+ 
+    if (nTeacers <= 0 ) {
+        alert("יש להזין לפחות מורה אחד");
+    }
+    else {
+
+
     currentDay = 0;
     if (!timeTable)
         getParameters();
@@ -253,15 +287,48 @@ function toTeacherName() {
         $("#teacherName").fadeIn();
     }
 }
-
+}
 function toClassesNum() {
+    var teacherN= document.getElementById("name").value;
+    if (!teacherN)
+    {
+       alert("יש להזין שם מורה");
+    }
+    else{
     if (!teachers[teacherIndex])
         getTeacherName();
     $("#teacherName").hide();
     $("#classesNum").fadeIn();
 }
+}
+function validTeachersHours(){
+    var checkDH = false;
+    var hoursDays = document.getElementById("hours").value;
+
+    var nTeacers = document.getElementById("numOfClasses").value;
+    if (nTeacers <= 0 || nTeacers>hoursDays ) {
+        checkDH = false;
+    }
+    else {
+        checkDH = true;
+    }
+    if (checkDH == true) {
+        $('#clsNumB').prop("disabled", false);
+    }
+    else {
+        $('#clsNumB').prop("disabled", true);
+    }
+
+
+}
 
 function toClassLocations() {
+        var hoursDays = document.getElementById("hours").value;
+        var nTeacers = document.getElementById("numOfClasses").value;
+    if (nTeacers <= 0 || nTeacers>hoursDays ) {
+    alert("יש להזין מספר שעות תקין בהתחשב בשעות העבודה של בית הספר");
+    }
+    else{
     getClassesNum();
     $("#classesNum").hide();
     $("#classLocations").fadeIn();
@@ -281,6 +348,7 @@ function toClassLocations() {
     }
     document.getElementById("selects").innerHTML = "";
     document.getElementById("selects").innerHTML += selects;
+}
 }
 
 function nextDay() {
